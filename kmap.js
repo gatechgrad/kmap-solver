@@ -419,19 +419,18 @@ function getMousePosition(e) {
   
   if (x > X_BUTTON_OFFSET - BUTTON_RADIUS) {
     for (i = 0; i < circlesArray.length; i++) {
-//      if (x > X_BUTTON_OFFSET + (i * BUTTON_SPACING - (BUTTON_RADIUS / 1))) {
-//        iSelectedButton = i;
-//      }
 
+			if (i == essentialPIText.length) {
+				y_button_start += (LINE_SPACING * 2);
+			}
+
+	
 			if (y > y_button_start - BUTTON_RADIUS && y < y_button_start + LINE_SPACING - BUTTON_RADIUS) {
 				iSelectedButton = i;
 				
 			}
 			y_button_start += LINE_SPACING;
 			
-			if (i == essentialPIText.length - 1) {
-				y_button_start += (LINE_SPACING * 2);
-			}
 			
 
     }
