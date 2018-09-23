@@ -1,7 +1,7 @@
 /**
  * kmap.js
  * KMap Solver
- * 2015 Levi D. Smith
+ * 2015, 2018 Levi D. Smith
  * Web - levidsmith.com
  * Twitter - @GaTechGrad
  */
@@ -11,9 +11,12 @@ var DEBUG = 0;
 var X_OFFSET = 64;
 var Y_OFFSET = 64;
 
-var X_BUTTON_OFFSET = 50;
-var Y_BUTTON_OFFSET = 480;
-var BUTTON_RADIUS = 12;
+var LINE_SPACING = 24;
+
+var X_BUTTON_OFFSET = 480 - 12;
+var Y_BUTTON_OFFSET = 64 + (LINE_SPACING * 2) + 18;
+
+var BUTTON_RADIUS = 8;
 var BUTTON_SPACING = 32;
 
 var CELL_SIZE = 96;
@@ -244,7 +247,7 @@ function drawCopyright() {
 
   ctx.font = "12px Arial";
   ctx.fillStyle = "#0000FF";
-  ctx.fillText("Levi D. Smith @GaTechGrad - May 2015", 8, 12);
+  ctx.fillText("Levi D. Smith @GaTechGrad - September 2018", 8, 12);
 }
 
 
@@ -253,9 +256,15 @@ function drawButtons() {
 
   x = X_BUTTON_OFFSET;
   y = Y_BUTTON_OFFSET;
+  
+  
+
+
 
   var ctx = c.getContext("2d");
 
+  y += LINE_SPACING;
+  
   for (i = 0; i < essentialPI.length; i++) {
 
     if (i == iSelectedButton) {
@@ -270,10 +279,11 @@ function drawButtons() {
     ctx.strokeStyle = "#FF0000";
     ctx.stroke();    
 
-    x += BUTTON_SPACING;
+    y += LINE_SPACING;
   }
 
 
+  y += LINE_SPACING * 2;
  
   for (i = 0; i < nonEssentialPI.length; i++) {
 
@@ -289,7 +299,7 @@ function drawButtons() {
     ctx.strokeStyle = "#FF8000";
     ctx.stroke();    
 
-    x += BUTTON_SPACING;
+    y += LINE_SPACING;
   }
 
 
@@ -333,8 +343,8 @@ function drawBooleanText() {
   y += 24
   ctx.font = "18px Courier New";
   for (i = 0; i < essentialPI.length; i++) {
-    ctx.fillText(essentialPIText[i], x, y);
-    ctx.fillText(essentialPINotText[i], x, y - 18);
+    ctx.fillText(essentialPIText[i], x + 8, y);
+    ctx.fillText(essentialPINotText[i], x + 8, y - 18);
     y += 24;
   }
 
@@ -345,8 +355,8 @@ function drawBooleanText() {
   y += 24
   ctx.font = "18px Courier New";
   for (i = 0; i < nonEssentialPI.length; i++) {
-    ctx.fillText(nonEssentialPIText[i], x, y);
-    ctx.fillText(nonEssentialPINotText[i], x, y - 18);
+    ctx.fillText(nonEssentialPIText[i], x + 8, y);
+    ctx.fillText(nonEssentialPINotText[i], x + 8, y - 18);
     y += 24;
   }
 
@@ -401,11 +411,28 @@ function getMousePosition(e) {
 
   //determine if a button was clicked
 //  alert('x: ' + x + ' y: ' + y);
-  if (y > Y_BUTTON_OFFSET - BUTTON_RADIUS) {
+
+
+  
+  iSelectedButton = -1;
+  y_button_start = Y_BUTTON_OFFSET + LINE_SPACING;
+  
+  if (x > X_BUTTON_OFFSET - BUTTON_RADIUS) {
     for (i = 0; i < circlesArray.length; i++) {
-      if (x > X_BUTTON_OFFSET + (i * BUTTON_SPACING - (BUTTON_RADIUS / 1))) {
-        iSelectedButton = i;
-      }
+//      if (x > X_BUTTON_OFFSET + (i * BUTTON_SPACING - (BUTTON_RADIUS / 1))) {
+//        iSelectedButton = i;
+//      }
+
+			if (y > y_button_start - BUTTON_RADIUS && y < y_button_start + LINE_SPACING - BUTTON_RADIUS) {
+				iSelectedButton = i;
+				
+			}
+			y_button_start += LINE_SPACING;
+			
+			if (i == essentialPIText.length - 1) {
+				y_button_start += (LINE_SPACING * 2);
+			}
+			
 
     }
   }
